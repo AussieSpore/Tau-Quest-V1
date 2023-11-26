@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://ba3xdghi8dmkt"]
+
+[ext_resource type="PackedScene" uid="uid://c58jh3vwht4ir" path="res://UIs/main_map_ui.tscn" id="2_q1wpg"]
+[ext_resource type="PackedScene" uid="uid://jb85btc1hba7" path="res://Entities/army_fleet_entities.tscn" id="3_ludyh"]
+
+[node name="Main" type="Node2D"]
+
+[node name="MainMapUI" parent="." instance=ExtResource("2_q1wpg")]
+script = null
+
+[node name="Units_Fleets_Entities" type="Node2D" parent="."]
+
+[node name="Army_Fleet_Entities" parent="Units_Fleets_Entities" instance=ExtResource("3_ludyh")]
+
+[node name="Planets_Systems_Entities" type="Node2D" parent="."]
