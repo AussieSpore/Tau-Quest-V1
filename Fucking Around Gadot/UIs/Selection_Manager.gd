@@ -5,8 +5,11 @@ var units = []
 
 
 func _ready():
+	get_units()
+	
+func get_units():
+	units = null
 	units = get_tree().get_nodes_in_group("units")
-	print (units)
 
 func _on_area_selected(object):
 	var start = object.start

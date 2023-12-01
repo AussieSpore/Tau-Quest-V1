@@ -1,15 +1,24 @@
-[gd_scene load_steps=3 format=3 uid="uid://ba3xdghi8dmkt"]
+[gd_scene load_steps=5 format=3 uid="uid://ba3xdghi8dmkt"]
 
 [ext_resource type="PackedScene" uid="uid://c58jh3vwht4ir" path="res://UIs/main_map_ui.tscn" id="2_q1wpg"]
 [ext_resource type="PackedScene" uid="uid://jb85btc1hba7" path="res://Entities/army_fleet_entities.tscn" id="3_ludyh"]
+[ext_resource type="PackedScene" uid="uid://bucv86efp41ca" path="res://Entities/system_entities.tscn" id="3_vt05j"]
+[ext_resource type="Script" path="res://Main + Global/Spawn_Manager.gd" id="4_m7qt2"]
 
 [node name="Main" type="Node2D"]
 
 [node name="MainMapUI" parent="." instance=ExtResource("2_q1wpg")]
-script = null
 
 [node name="Units_Fleets_Entities" type="Node2D" parent="."]
 
 [node name="Army_Fleet_Entities" parent="Units_Fleets_Entities" instance=ExtResource("3_ludyh")]
+position = Vector2(-6, 6)
 
 [node name="Planets_Systems_Entities" type="Node2D" parent="."]
+
+[node name="System_entities" parent="Planets_Systems_Entities" instance=ExtResource("3_vt05j")]
+
+[node name="Spawn_Manager" type="Node2D" parent="."]
+script = ExtResource("4_m7qt2")
+
+[connection signal="local_to_main_fleet_entity_spawn_request" from="MainMapUI" to="Spawn_Manager" method="_on_main_map_ui_local_to_main_fleet_entity_spawn_request"]

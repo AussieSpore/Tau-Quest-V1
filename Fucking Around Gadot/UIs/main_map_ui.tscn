@@ -1,17 +1,28 @@
-[gd_scene load_steps=4 format=3 uid="uid://c58jh3vwht4ir"]
+[gd_scene load_steps=7 format=3 uid="uid://c58jh3vwht4ir"]
 
+[ext_resource type="Script" path="res://UIs/MainUICanvasLayer.gd" id="1_8y8jw"]
 [ext_resource type="Script" path="res://UIs/Selection_Manager.gd" id="2_3vb0i"]
-[ext_resource type="Script" path="res://UIs/Game_Camera.gd" id="3_cu5by"]
+[ext_resource type="Script" path="res://UIs/Selection_Script.gd" id="2_elmlw"]
+[ext_resource type="Script" path="res://UIs/ViewCamera.gd" id="3_qy7si"]
 
 [sub_resource type="GDScript" id="GDScript_f3xkb"]
 script/source = "extends Node2D
 
+signal local_to_main_fleet_entity_spawn_request
+
+
+func _on_main_ui_canvas_layer_local_fleet_entity_spawn_request():
+	emit_signal(\"local_to_main_fleet_entity_spawn_request\") 
+	print(\"I am noticing a spawn fleet request from my children nodes\")
 "
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_kn3hv"]
 
 [node name="MainMapUI" type="Node2D"]
 script = SubResource("GDScript_f3xkb")
 
 [node name="MainUICanvasLayer" type="CanvasLayer" parent="."]
+script = ExtResource("1_8y8jw")
 
 [node name="Top_UI_Panel" type="Panel" parent="MainUICanvasLayer"]
 anchors_preset = -1
@@ -20,39 +31,84 @@ anchor_right = 0.891493
 anchor_bottom = 0.0478395
 metadata/_edit_use_anchors_ = true
 
-[node name="Spawn_Option_Button" type="OptionButton" parent="MainUICanvasLayer"]
+[node name="Spawn_Option_Button" type="Button" parent="MainUICanvasLayer"]
 anchors_preset = -1
 anchor_left = 0.0208333
 anchor_top = 0.00154321
-anchor_right = 0.112847
+anchor_right = 0.130208
 anchor_bottom = 0.0509259
 grow_horizontal = 2
+toggle_mode = true
+text = "Spawn"
 metadata/_edit_use_anchors_ = true
 
-[node name="Menu_Option_Button" type="OptionButton" parent="MainUICanvasLayer"]
+[node name="Panel" type="Panel" parent="MainUICanvasLayer/Spawn_Option_Button"]
+layout_mode = 0
+anchor_left = -0.0754715
+anchor_top = 1.21875
+anchor_right = 1.07547
+anchor_bottom = 4.96875
+metadata/_edit_use_anchors_ = true
+
+[node name="FleetSpawnButton" type="Button" parent="MainUICanvasLayer/Spawn_Option_Button/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0655738
+anchor_top = 0.0666667
+anchor_right = 0.934426
+anchor_bottom = 0.308333
+toggle_mode = true
+text = "Fleet"
+metadata/_edit_use_anchors_ = true
+
+[node name="SystemSpawnButton" type="Button" parent="MainUICanvasLayer/Spawn_Option_Button/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0655738
+anchor_top = 0.358333
+anchor_right = 0.934426
+anchor_bottom = 0.6
+toggle_mode = true
+text = "System"
+metadata/_edit_use_anchors_ = true
+
+[node name="CloseSpawnMenu" type="Button" parent="MainUICanvasLayer/Spawn_Option_Button/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.196721
+anchor_top = 0.666667
+anchor_right = 0.819672
+anchor_bottom = 0.925
+text = "X"
+metadata/_edit_use_anchors_ = true
+
+[node name="Menu_Option_Button" type="Button" parent="MainUICanvasLayer"]
 anchors_preset = -1
 anchor_left = 0.177083
 anchor_top = 0.00154321
 anchor_right = 0.269097
 anchor_bottom = 0.0509259
 grow_horizontal = 2
+text = "Menu"
 metadata/_edit_use_anchors_ = true
 
-[node name="Player_Option_Button" type="OptionButton" parent="MainUICanvasLayer"]
+[node name="Player_Option_Button" type="Button" parent="MainUICanvasLayer"]
 anchors_preset = -1
 anchor_left = 0.330729
 anchor_top = 0.00154321
 anchor_right = 0.422743
 anchor_bottom = 0.0478395
 grow_horizontal = 2
+text = "Players"
 metadata/_edit_use_anchors_ = true
 
-[node name="Econ_Option_Button" type="OptionButton" parent="MainUICanvasLayer"]
+[node name="Econ_Option_Button" type="Button" parent="MainUICanvasLayer"]
 anchors_preset = -1
 anchor_left = 0.90625
 anchor_right = 0.998264
 anchor_bottom = 0.0462963
 grow_horizontal = 2
+text = "Econ Info"
 metadata/_edit_use_anchors_ = true
 
 [node name="Bottom_UI_Panel" type="Panel" parent="MainUICanvasLayer"]
@@ -64,10 +120,13 @@ metadata/_edit_use_anchors_ = true
 
 [node name="RichTextLabel" type="RichTextLabel" parent="MainUICanvasLayer/Bottom_UI_Panel"]
 layout_mode = 0
-offset_left = 517.0
-offset_top = 12.0
-offset_right = 670.0
-offset_bottom = 52.0
+anchor_left = 0.422376
+anchor_top = 0.190477
+anchor_right = 0.60104
+anchor_bottom = 0.825399
+offset_left = 3.05176e-05
+offset_right = 6.10352e-05
+metadata/_edit_use_anchors_ = true
 
 [node name="End Turn Button" type="Button" parent="MainUICanvasLayer"]
 anchors_preset = -1
@@ -82,7 +141,19 @@ metadata/_edit_use_anchors_ = true
 script = ExtResource("2_3vb0i")
 
 [node name="Selection_Box" type="Panel" parent="Selection_Manager"]
-script = ExtResource("3_cu5by")
+visible = false
+script = ExtResource("2_elmlw")
 metadata/_edit_use_anchors_ = true
 
-[node name="Game_Camera" type="Camera2D" parent="Selection_Manager"]
+[node name="ViewCamera" type="Camera2D" parent="."]
+script = ExtResource("3_qy7si")
+
+[node name="Sprite2D" type="Sprite2D" parent="ViewCamera"]
+scale = Vector2(3, 3)
+texture = SubResource("PlaceholderTexture2D_kn3hv")
+
+[connection signal="local_fleet_entity_spawn_request" from="MainUICanvasLayer" to="." method="_on_main_ui_canvas_layer_local_fleet_entity_spawn_request"]
+[connection signal="toggled" from="MainUICanvasLayer/Spawn_Option_Button" to="MainUICanvasLayer" method="_on_spawn_option_button_toggled"]
+[connection signal="toggled" from="MainUICanvasLayer/Spawn_Option_Button/Panel/FleetSpawnButton" to="MainUICanvasLayer" method="_on_fleet_spawn_button_toggled"]
+[connection signal="toggled" from="MainUICanvasLayer/Spawn_Option_Button/Panel/SystemSpawnButton" to="MainUICanvasLayer" method="_on_system_spawn_button_toggled"]
+[connection signal="pressed" from="MainUICanvasLayer/Spawn_Option_Button/Panel/CloseSpawnMenu" to="MainUICanvasLayer" method="_on_close_spawn_menu_pressed"]

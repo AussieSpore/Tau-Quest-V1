@@ -1,3 +1,52 @@
-[gd_scene format=3 uid="uid://bucv86efp41ca"]
+[gd_scene load_steps=5 format=3 uid="uid://bucv86efp41ca"]
 
-[node name="System Entities" type="Node2D"]
+[ext_resource type="Script" path="res://Entities/System_entities.gd" id="1_7r5ni"]
+[ext_resource type="Texture2D" uid="uid://bkfigkfldupij" path="res://Images/planet-logo-icon-design-template-free-vector.png" id="2_4fw53"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5oakx"]
+radius = 44.9444
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6fboy"]
+bg_color = Color(0.372549, 0.686275, 0.384314, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.439216, 0.92549, 0.439216, 1)
+
+[node name="System_entities" type="CharacterBody2D" groups=["units"]]
+script = ExtResource("1_7r5ni")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_4fw53")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_5oakx")
+
+[node name="Selection_Box" type="Panel" parent="."]
+offset_left = -45.0
+offset_top = -44.0
+offset_right = 46.0
+offset_bottom = 45.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_6fboy")
+metadata/_edit_use_anchors_ = true
+
+[node name="CheckButton" type="CheckButton" parent="."]
+offset_left = -56.0
+offset_top = 48.0
+offset_right = 54.0
+offset_bottom = 79.0
+text = "Locked?"
+metadata/_edit_use_anchors_ = true
+
+[node name="LineEdit" type="LineEdit" parent="."]
+offset_left = -44.0
+offset_top = -77.0
+offset_right = 46.0
+offset_bottom = -46.0
+text = "Name"
+alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[connection signal="toggled" from="CheckButton" to="." method="_on_check_button_toggled"]
